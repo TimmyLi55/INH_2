@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-public class ProductManagerTest {
+public class ProductRepositoryTest {
 
     ProductRepository repo = new ProductRepository();
     ProductManager manager = new ProductManager(repo);
@@ -12,44 +12,6 @@ public class ProductManagerTest {
     Product book2 = new Book(2, "Книга", 500, "Зов кукушки", "Роберт Гэлбрейт");
     Product smart1 = new Smartphone(3, "Смартфон", 2500, "Xiaomi Mi11Pro", "Кинай");
     Product smart2 = new Smartphone(4, "Смартфон", 6000, "Apple Iphone 12", "США");
-
-    @Test
-    public void testAddBook() {
-
-        manager.addProduct(book);
-
-        Product[] expected = {book};
-        Product[] actual = repo.getProducts();
-
-        Assertions.assertArrayEquals(expected, actual);
-
-    }
-
-    @Test
-    public void testAddSmart() {
-
-        manager.addProduct(smart1);
-
-        Product[] expected = {smart1};
-        Product[] actual = repo.getProducts();
-
-        Assertions.assertArrayEquals(expected, actual);
-
-    }
-
-    @Test
-    public void productManagerTestSearch() {
-        manager.addProduct(smart1);
-        manager.addProduct(smart2);
-        manager.addProduct(book);
-        manager.addProduct(book2);
-
-
-        Product[] expected = {smart1, smart2};
-        Product[] actual = manager.searchBy("Смартфон");
-
-        Assertions.assertArrayEquals(expected, actual);
-    }
 
     @Test
     public void productRepositoryDelForIdTest() {
@@ -64,6 +26,20 @@ public class ProductManagerTest {
         Product[] actual = repo.getProducts();
 
         Assertions.assertArrayEquals(expected, actual);
+
+    }
+
+    @Test
+    public  void productRepositoryDelForIdWithException (){
+        manager.addProduct(smart1);
+        manager.addProduct(smart2);
+        manager.addProduct(book);
+        manager.addProduct(book2);
+
+        Assertions.assertThrows(NotFoundException.class, () -> {
+           repo.removeById(5);
+        });
+
 
     }
 }
